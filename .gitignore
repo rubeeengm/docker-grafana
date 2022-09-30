@@ -1,0 +1,6 @@
+# entornos de desarrollo
+*-workspace
+.vscode/
+.idea/
+
+.env

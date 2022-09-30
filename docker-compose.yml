@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+    grafana:
+        image: grafana/grafana
+        ports:
+            - 3000:3000
+
+    prometheus:
+        image: prom/prometheus
+        ports:
+            - 9092:9090
+        volumes:
+            - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    #
+    #  postgres:
+    #    image: postgres:latest
+    #    ports:
+    #      - 5432:5432
+    #    volumes:
+    #      - ./backup:/var/lib/postgresql/data
+    #    environment:
+    #      POSTGRES_PASSWORD: postgrespassword
+    #      POSTGRES_DB: shop
+
+    postgres-exporter:
+        image: prometheuscommunity/postgres-exporter
+        ports:
+            - 9187:9187
+        environment:
+            DATA_SOURCE_NAME: "postgresql://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=disable"
+        links:
+            - prometheus
